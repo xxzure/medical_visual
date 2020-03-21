@@ -21,7 +21,8 @@ export default {
 	[RECORD_USERINFO](state, info) {
 		state.userInfo = info;
 		state.login = true;
-		setStore('user_id', info.id);
+		setStore('user_info', info);
+		// setStore('user_id', info.id);
 	},
 	//获取用户信息存入vuex
 	[GET_USERINFO](state, info) {

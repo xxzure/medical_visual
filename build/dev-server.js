@@ -38,8 +38,8 @@ compiler.plugin('compilation', function(compilation) {
 var context = config.dev.context
 
 switch(process.env.NODE_ENV){
-    case 'local': var proxypath = 'http://localhost:8103'; break;
-    case 'online': var proxypath = 'http://app.pku.edu.cn:8103'; break;
+    case 'local': var proxypath = 'http://app.pku.edu.cn/medical-backend'; break;
+    case 'online': var proxypath = 'http://app.pku.edu.cn/medical-backend'; break;
     default:  var proxypath = config.dev.proxypath;
 }
 var options = {

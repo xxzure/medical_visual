@@ -9,7 +9,7 @@ module.exports = {
         index: path.resolve(__dirname, '../medical_visual/index.html'),
         assetsRoot: path.resolve(__dirname, '../medical_visual'),
         assetsSubDirectory: 'static',
-        assetsPublicPath: '/medical_visual/',
+        assetsPublicPath: '/medical/',
         productionSourceMap: true,
         // Surge or Netlify already gzip all static assets for you.
         // Before setting to `true`, make sure to:
@@ -21,16 +21,13 @@ module.exports = {
         env: {
             NODE_ENV: '"development"'
         },
-        port: 8010,
+        port: 80,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         context: [ //代理路径
-            '/api',
-            '/app/ecg',
-            '/app/contacts',
-            '/app/messages',
-            '/app/pe',
+            '/medical-backend',
         ],
+        proxyPath: 'http://app.pku.edu.cn/',
         // proxyTable: {
         //     '/api': {
         //         target: 'http://app.pku.edu.cn:8103',

@@ -2,9 +2,8 @@
   <div class="history_detail_page">
         <head-top head-title="体检记录详情" go-back='true'></head-top>
         <ul class="history_list_ul">
-            <li class="history_list_li" v-for="(item,index) in recordDetail" :key="item.id">
+            <li class="history_list_li" v-for="(item,index) in recordDetail_" :key="item.id">
                 <section class="history_item_right">
-                    <section @click="showDetail(item.tag)">
                         <header class="history_item_right_header">
                             <section class="history_header">
                                 <h4><span class="ellipsis">{{index}}</span>
@@ -16,16 +15,27 @@
                             </h4>
                         </header>
                     </section>
+            </li>
+        </ul>
+        <ul class="history_list_ul">
+            <li class="history_list_li" style="background-color:#F5F5F5; padding-top:2em">
+            </li>
+            <li class="history_list_li" v-for="(item,index) in predictRes" :key="item.id">
+                <section class="history_item_right">
+                    <header class="history_item_right_header">
+                        <section class="history_header">
+                            <h4><span class="ellipsis">{{index}}</span>
+                            </h4>
+                        </section>
+                        <h4 class="history_status">
+                            {{item}}
+                        </h4>
+                    </header>
                 </section>
             </li>
         </ul>
-        <!-- <section id="scroll_section" class="scroll_container">
-            <section class="scroll_insert">
-
-            </section>
-        </section> -->
         <transition name="loading">
-            <loading v-if="showLoading"></loading>
+            <loading v-if="showLoading || predicting"></loading>
         </transition>
     </div>
 </template>
@@ -34,7 +44,7 @@
     import {mapState, mapMutations} from 'vuex'
     import headTop from 'src/components/header/head'
     import {getImgPath} from 'src/components/common/mixin'
-    import {getbodyrecord} from 'src/service/getData'
+    import {getbodyrecord, makepepredict, getpepredict} from 'src/service/getData'
     import loading from 'src/components/common/loading'
     import BScroll from 'better-scroll'
     import {imgBaseUrl} from 'src/config/env'
@@ -45,11 +55,15 @@
             return{
                 recordDetail: null,
                 showLoading: true, //显示加载动画
-                imgBaseUrl
+                predicting: true,
+                imgBaseUrl,
+                predictRes: null
             }
         },
         mounted(){
             this.initData();
+            makepepredict(this.historyRecordDetail);
+            this.predict();
         },
         mixins: [getImgPath],
         components: {
@@ -60,17 +74,54 @@
             ...mapState([
                 'historyRecordDetail', 'userInfo'
             ]),
+            // 处理过的recordDetail
+            recordDetail_: function(){
+                let obj = this.recordDetail;
+                let ret = {};
+                for(let key in obj){
+                    if(key === 'id' || key === '_time')
+                        continue;
+                    ret[key] = obj[key];
+                }
+                return ret;
+            }
         },
         methods: {
             async initData(){
                 if (this.userInfo && this.userInfo.id) {
                     let obj = await getbodyrecord(this.historyRecordDetail);
+                    console.log(this.historyRecordDetail)
                     if(obj.success){
-                        this.recordDetail = obj.data;
+                        // if(this.recordDetail)
+                        //     this.recordDetail = {...obj.data, ...this.recordDetail};
+                        // else
+                            this.recordDetail = obj.data;
                     }
                     this.showLoading = false;
                 }
             },
+            async predict(){
+                if (this.userInfo && this.userInfo.id) {
+                    let obj = await getpepredict(this.historyRecordDetail);
+                    console.log(obj)
+                    if(obj.success){
+                        let res = eval(`(${obj.data})`.replace(/\[|]/g,'')
+                        .replace("LDLC", "低密度脂蛋白")
+                        .replace("GYSZ", "甘油三酯")
+                        .replace("NS", "尿酸"));
+                        for(let key in res){
+                            if(res[key] == 1)
+                                res[key] = "偏高";
+                            else
+                                res[key] = "正常";
+                        }
+                        this.predictRes = res;
+                        this.predicting = false;
+                    } else {
+                        setTimeout(this.predict, 500);
+                    }
+                }
+            }
         },
         watch: {
             userInfo: function (value) {
@@ -158,13 +209,14 @@
                             align-items: center;
                             justify-content: flex-start;
                             @include sc(.75rem, #333);
-                            line-height: 1rem;
+                            line-height: 1.1rem;
                             margin-left:1rem;
                         }
                     }
                     .history_status{
                         margin-right:1rem;
-                        @include sc(0.8rem, #333);
+                        line-height: 1.1rem;
+                        @include sc(0.75rem, #333);
                     }
                 }
             }

@@ -7,6 +7,13 @@
                 <polyline points="12,18 4,9 12,0" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
             </svg>
         </section>
+        <router-link :to="'/history/addHistoryRecord'" class="head_plus" v-if="menuPlus" @click="menuPlus">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <polyline points="0,7 14,7" style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
+                <polyline points="7,0 7,14 " style="fill:none;stroke:rgb(255,255,255);stroke-width:2"/>
+            </svg>
+        </router-link>
+
         <router-link :to="userInfo? '/profile':'/login'" v-if='signinUp' class="head_login">
             <svg class="user_avatar" v-if="userInfo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
@@ -36,7 +43,7 @@
             this.getUserInfo();
 
         },
-        props: ['signinUp', 'headTitle', 'goBack'],
+        props: ['signinUp', 'headTitle', 'goBack', 'menuPlus'],
         computed: {
             ...mapState([
                 'userInfo'
@@ -68,6 +75,13 @@
         @include wh(0.6rem, 1rem);
         line-height: 2.2rem;
         margin-left: .4rem;
+    }
+    .head_plus{
+        right: 0.55rem;
+        @include wh(0.7rem, 1.2rem);
+        @include ct;
+        line-height: 2.2rem;
+        // margin-left: .4rem;
     }
     .head_login{
         right: 0.55rem;

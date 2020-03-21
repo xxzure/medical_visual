@@ -7,7 +7,7 @@
  * 
  */
 
-let baseUrl = ''; 
+let baseUrl = '/medical-backend'; 
 let routerMode = 'hash';
 let imgBaseUrl = '';
 

@@ -9,6 +9,7 @@ const forget = r => require.ensure([], () => r(require('../page/forget/forget'))
 const history = r => require.ensure([], () => r(require('../page/history/history')), 'history')
 const historyDetail = r => require.ensure([], () => r(require('../page/history/children/historyDetail')), 'historyDetail')
 const historyRecordDetail = r => require.ensure([], () => r(require('../page/history/children/historyRecordDetail')), 'historyRecordDetail')
+const addHistoryRecord = r => require.ensure([], () => r(require('../page/history/children/addHistoryRecord')), 'addHistoryRecord')
 const chatbox = r => require.ensure([], () => r(require('../page/chat/children/chatbox')), 'chatbox')
 
 const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
@@ -118,7 +119,11 @@ export default [{
                 path: 'historyRecordDetail',
                 component: historyRecordDetail,
                 meta: { requireAuth: true, },
-            }, ]
+            },{
+                path: 'addHistoryRecord',
+                component: addHistoryRecord,
+                meta: { requireAuth : true, }
+            },]
         },
         //发现页
         {

@@ -3,11 +3,12 @@ import Vuex from 'vuex'
 import mutations from './mutations'
 import actions from './action'
 import getters from './getters'
+import {getStore} from '../config/mUtils'
 
 Vue.use(Vuex)
 
 const state = {
-	userInfo: null, //用户信息
+	userInfo: JSON.parse(getStore('user_info')), //用户信息
 	shopid: null,//商铺id
 	remarkText: null,//可选备注内容
 	inputText: '',//输入备注内容

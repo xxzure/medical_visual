@@ -2,7 +2,7 @@ import {
 	baseUrl
 } from './env'
 
-export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
+export default async (url = '', data = {}, type = 'GET', method = 'fetch', json = false) => {
 	type = type.toUpperCase();
 	url = baseUrl + url;
 	if (type == 'GET') {
@@ -33,16 +33,25 @@ export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
 		// 		value: new FormData(data)
 		// 	})
 		// }
-		if (type == 'POST'){
-			let dataStr = ''; //数据拼接字符串
-			Object.keys(data).forEach(key => {
-				dataStr += key + '=' + data[key] + '&';
-			})
-			if (dataStr !== '') {
-				dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+		if (type == 'POST') {
+			if (json == true) {
+				let dataStr = JSON.stringify(data);
+				requestConfig.headers["Content-Type"] = "application/json"
 				Object.defineProperty(requestConfig, 'body', {
 					value: dataStr
 				})
+			}
+			else {
+				let dataStr = ''; //数据拼接字符串
+				Object.keys(data).forEach(key => {
+					dataStr += key + '=' + data[key] + '&';
+				})
+				if (dataStr !== '') {
+					dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+					Object.defineProperty(requestConfig, 'body', {
+						value: dataStr
+					})
+				}
 			}
 		}
 		try {

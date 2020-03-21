@@ -1,6 +1,6 @@
  <template>
     <div class="history_page">
-        <head-top head-title="记录管理" go-back='true'></head-top>
+        <head-top head-title="记录管理" go-back='true' menu-plus='true'></head-top>
         
         <div class="history_type">
             <el-radio-group v-model="datatype">
@@ -129,18 +129,18 @@
                     let record_res = await getrecordtag();
                     var record_data = record_res.data;
                     var x,y;
-                    for(x in record_data){
-                        var tag = record_data[x].id;
-                        let pepredict = await app_pepredict(tag);
-                        if(pepredict.success){
-                            console.log(typeof(pepredict.data));
-                            // for(y in pepredict.data){
-                            //     console.log(pepredict.data[y]);
-                            // }
+                    // for(x in record_data){
+                    //     var tag = record_data[x].id;
+                    //     let pepredict = await app_pepredict(tag);
+                    //     if(pepredict.success){
+                    //         // console.log(typeof(pepredict.data));
+                    //         // for(y in pepredict.data){
+                    //         //     console.log(pepredict.data[y]);
+                    //         // }
                             
-                        }
-                        // console.log(pepredict);
-                    }
+                    //     }
+                    //     // console.log(pepredict);
+                    // }
                     // console.log(record_data);
                     this.bodyrecordList = [...record_data];
 

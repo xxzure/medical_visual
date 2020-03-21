@@ -142,6 +142,12 @@ export const getrecordtag = () => fetch('/api/type/4');
 
 export const getbodyrecord = (tag) => fetch('/api/type/4/'+tag);
 
+export const makepepredict = (id) => fetch('/app/pe/predict', {"id": id}, 'POST');
+
+export const addrecord = (content) => fetch('/api/type/4', content, 'POST', 'fetch', true);
+
+export const getpepredict = (id) => fetch('/app/pe/predict', {"id": id});
+
 //APP
 
 //ecg 统计信息
